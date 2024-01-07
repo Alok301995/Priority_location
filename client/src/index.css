@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.custom-checkbox {
+  @apply border-2 border-solid border-gray-300 transition-transform duration-300 transform scale-110;
+}
+.custom-checkbox:checked {
+  @apply border-2 border-solid border-gray-300;
+}
