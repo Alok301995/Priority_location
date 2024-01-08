@@ -8,7 +8,7 @@ import Table from "./Table";
 function ServiceLocationsButton() {
   return (
     <div className="group p-2  border-b-[1px] border-b-gray-200 cursor-pointer transition-all ">
-      <div className="bg-slate-200   hover:bg-[#2596be] p-2 rounded-md transition-all">
+      <div className="bg-slate-200  hover:bg-[#2596be] p-2 rounded-md transition-all">
         <p className="font-medium text-gray-800 text-center transition-colors duration-300 group-hover:text-white">
           Recommended Locations
         </p>

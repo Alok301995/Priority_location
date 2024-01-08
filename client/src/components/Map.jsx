@@ -178,8 +178,8 @@ function Map() {
       <LoadScript googleMapsApiKey="AIzaSyDi3kInvWusUg4z6_sdFCa5PQBKL7QMEu4">
         <GoogleMap
           mapContainerStyle={{ height: "100%", width: "100%" }}
-          // zoom={12}
-          // center={{ lat: 23.0588, lng: 72.6216 }}
+          zoom={5}
+          center={{ lat: 20.5937, lng: 78.9629 }}
           onLoad={handleLoadMap}
         ></GoogleMap>
       </LoadScript>
