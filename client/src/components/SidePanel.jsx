@@ -3,12 +3,13 @@ import OptionPanel from "../components/OptionPanel";
 import gridIcon from "../assets/grid.png";
 import useHomeContext from "../context/HomeContext";
 import Dropdown from "./Dropdown";
+import Table from "./Table";
 
 function ServiceLocationsButton() {
   return (
-    <div className="group p-2 my-1 border-b-[1px] border-b-gray-200 cursor-pointer transition-all ">
-      <div className="bg-slate-100   hover:bg-blue-200 p-2 rounded-md transition-all">
-        <p className="font-medium text-gray-800 transition-colors duration-300 group-hover:text-blue-600">
+    <div className="group p-2  border-b-[1px] border-b-gray-200 cursor-pointer transition-all ">
+      <div className="bg-slate-200   hover:bg-[#2596be] p-2 rounded-md transition-all">
+        <p className="font-medium text-gray-800 text-center transition-colors duration-300 group-hover:text-white">
           Recommended Locations
         </p>
       </div>
@@ -29,6 +30,18 @@ function Header({ icon }) {
 function SidePanel() {
   const { mapData } = useHomeContext();
 
+  const tableHeaders = ["KPI Name", "Value"];
+  const tableData = [
+    ["Customer Density", "100"],
+    ["Infra Score", "75"],
+    ["Serice Score", "75"],
+    ["CAGR", "75"],
+    ["Similarity Score", "75"],
+    ["Proximity Score", "75"],
+
+    // Add more rows as needed
+  ];
+
   useEffect(() => {}, [mapData.showCustomerDensity]);
 
   return (
@@ -40,8 +53,11 @@ function SidePanel() {
         <OptionPanel />
         <ServiceLocationsButton />
       </div>
+      <div className="flex flex-1 justify-center overflow-scroll">
+        {/* show all KPIs data in table  */}
 
-      <p>{mapData.showCustomerDensity ? "Yes" : "No"}</p>
+        <Table headers={tableHeaders} data={tableData} />
+      </div>
     </div>
   );
 }

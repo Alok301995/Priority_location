@@ -137,11 +137,12 @@ function Map() {
 
   /*
     
-  
-  
-  
-  
-  
+    1. Fetch Customer Density Data for particular city
+    2. Create Polygon for each customer density data
+    3. Add the polygon to the mapInstance
+    4. Store the polygon in polygonsRef
+    5. If the showCustomerDensity is false then remove all the polygons from the mapInstance
+
   */
 
   useEffect(() => {
