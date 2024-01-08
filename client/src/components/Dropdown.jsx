@@ -12,8 +12,8 @@ export const DropdownComp = ({ kpi }) => {
   return (
     <div className="my-1">
       <div
-        className={`group flex justify-between items-center p-2 rounded-md cursor-pointer transition-all ${
-          show ? "bg-blue-200 " : "bg-slate-100 hover:bg-blue-200"
+        className={`group flex justify-between items-center px-4 py-2  rounded-md cursor-pointer transition-all ${
+          show ? "bg-[#2596be] " : "bg-slate-200 hover:bg-[#2596be] "
         }`}
         onClick={() => {
           if (kpi === "Customer Density") {
@@ -27,7 +27,7 @@ export const DropdownComp = ({ kpi }) => {
       >
         <p
           className={`ml-2 font-medium text-gray-800 transition-colors duration-300 ${
-            show ? "text-blue-500 " : "group-hover:text-blue-500"
+            show ? "     text-white " : "group-hover:text-white"
           }  `}
         >
           {kpi}
@@ -41,7 +41,7 @@ export const DropdownComp = ({ kpi }) => {
       </div>
 
       {show && (
-        <div className="flex flex-col transition ease-in-out">
+        <div className="flex flex-col transition-all ">
           <ul className="bg-white border-[1px] border-gray-100 rounded-sm shadow-sm">
             <li className="flex items-center  p-2 hover:bg-gray-100">
               <input type="checkbox" className="" />
@@ -93,7 +93,7 @@ function Dropdown() {
       <select
         name="Select City"
         id="city"
-        className="border-[1px] border-gray-300 bg-white h-10 w-full px-5 pr-8 rounded-sm text-sm focus:outline-none"
+        className="border-[1px] outline-none border-gray-300 bg-white h-10 w-full px-5 pr-8 rounded-md text-sm focus:border-blue-500 focus:focus: transition-all duration-300 "
         onChange={handleCityChange}
         value={mapData.cityName}
       >

@@ -49,13 +49,18 @@ function Map() {
 
         // create new boundary data and add it to the mapInstance
         const boundaryData = cityData[mapData.cityName].boundaries;
+
+        const bData = boundaryData.map((boundary) => {
+          return { lat: boundary[1], lng: boundary[0] };
+        });
+
         const boundaryPolygon = new window.google.maps.Polygon({
-          paths: boundaryData,
-          strokeColor: "#000000",
-          strokeOpacity: 0.8,
+          paths: bData,
+          strokeColor: "#26577C",
+          strokeOpacity: 1,
           strokeWeight: 2,
           fillColor: "#000000",
-          fillOpacity: 0.35,
+          fillOpacity: 0.05,
         });
 
         boundaryPolygon.setMap(mapInstance);
@@ -67,6 +72,59 @@ function Map() {
           const dealerNetworkMarker = new window.google.maps.Marker({
             position: dealer,
             title: "Dealer Network",
+            icon: {
+              path: google.maps.SymbolPath.CIRCLE,
+              scale: 8.5,
+              fillColor: "#F00",
+              fillOpacity: 0.8,
+              strokeWeight: 0.9,
+            },
+          });
+
+          // Create an InfoWindow for each dealer
+          const infoWindow = new google.maps.InfoWindow({
+            content: `<div style="width:200px" >
+                        <div class="flex flex-col h-full w-full ">
+                          <p class="text-xs font-medium text-gray-700">KPI's Info</p>
+                          <div class="flex flex-col " >
+                          <div class="flex justify-between p-1 my-1">
+                            <span class="text-xs text-gray-700">Customer Density</span>
+                            <p class="font-medium">1324</p>
+                          </div>
+                          <div class="flex justify-between p-1 my-1">
+                            <span class="text-xs text-gray-700 mr-2 ">Infra Score</span>
+                            <p class="font-medium">1324</p>
+                          </div>
+                          <div class="flex  justify-between p-1 my-1">
+                            <span class="text-xs  text-gray-700">Similarity Score</span>
+                            <p class="font-medium">1324</p>
+                          </div>
+                          <div class="flex justify-between p-1 my-1">
+                            <span class="text-xs text-gray-700">Service Score</span>
+                            <p class="font-medium">1324</p>
+                          </div>
+                          <div class="flex justify-between p-1 my-1">
+                            <span class="text-xs text-gray-700">CAGR</span>
+                            <p class="font-medium">1324</p>
+                          </div>
+                        </div>
+                      </div>
+
+            </div>`,
+            maxWidth: 500,
+            resizeble: true,
+          });
+
+          // Attach click event to open the InfoWindow when the marker is clicked
+          dealerNetworkMarker.addListener("mouseover", () => {
+            infoWindow.open(mapInstance, dealerNetworkMarker);
+            infoWindow.setAnimation(google.maps.Animation.BOUNCE);
+          });
+
+          // Attach click event to open the InfoWindow when the marker is clicked
+          dealerNetworkMarker.addListener("mouseout", () => {
+            infoWindow.close();
+            infoWindow.setAnimation(null);
           });
 
           dealerNetworkMarker.setMap(mapInstance);
@@ -87,8 +145,6 @@ function Map() {
   */
 
   useEffect(() => {
-    console.log("Inside Customer Density useEffect ");
-
     if (mapData.showCustomerDensity) {
       // create new polygons and add it to the mapInstance
       if (mapInstance && customerDensityData.length > 0) {
@@ -121,12 +177,11 @@ function Map() {
       <LoadScript googleMapsApiKey="AIzaSyDi3kInvWusUg4z6_sdFCa5PQBKL7QMEu4">
         <GoogleMap
           mapContainerStyle={{ height: "100%", width: "100%" }}
-          zoom={12}
-          center={{ lat: 23.0588, lng: 72.6216 }}
+          // zoom={12}
+          // center={{ lat: 23.0588, lng: 72.6216 }}
           onLoad={handleLoadMap}
         ></GoogleMap>
       </LoadScript>
-      <p>{mapData.cityName}</p>
     </div>
   );
 }

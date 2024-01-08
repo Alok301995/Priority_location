@@ -3,7 +3,7 @@ import Map from "./Map";
 
 function MapView() {
   return (
-    <div className="h-full">
+    <div className="h-full bg-gray-100">
       <Map />
     </div>
   );
