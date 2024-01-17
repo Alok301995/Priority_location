@@ -14,13 +14,12 @@ function App() {
     cityName: "",
     showGrids: false,
     showCustomerDensity: false,
+    showRecommendedLocation: false,
   };
 
   const [mapData, mapDispatch] = useReducer(mapReducer, mapState);
 
-  useEffect(() => {
-    console.log("App.js useEffect");
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <div className="App">

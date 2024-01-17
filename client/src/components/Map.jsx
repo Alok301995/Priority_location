@@ -7,10 +7,11 @@ import { createSquarePolygon } from "../services/mapUtilities";
 function Map() {
   const { mapData } = useHomeContext();
   const [mapInstance, setMapInstance] = useState(null);
-  const [customerDensityData, setCustomerDensityData] = useState([]);
   const polygonsRef = useRef([]);
   const boundaryRef = useRef(null);
   const dealerNetworkRef = useRef([]);
+  const customerDensityPolygon = useRef([]);
+  const recommendedLocationPolygonRef = useRef([]);
 
   const handleLoadMap = (map) => {
     setMapInstance(map);
@@ -118,13 +119,11 @@ function Map() {
           // Attach click event to open the InfoWindow when the marker is clicked
           dealerNetworkMarker.addListener("mouseover", () => {
             infoWindow.open(mapInstance, dealerNetworkMarker);
-            infoWindow.setAnimation(google.maps.Animation.BOUNCE);
           });
 
           // Attach click event to open the InfoWindow when the marker is clicked
           dealerNetworkMarker.addListener("mouseout", () => {
             infoWindow.close();
-            infoWindow.setAnimation(null);
           });
 
           dealerNetworkMarker.setMap(mapInstance);
@@ -145,44 +144,96 @@ function Map() {
 
   */
 
+  function getColorBasedOnDensity(density) {
+    // Implement your logic to determine the color based on density
+    // You can use a gradient, thresholds, or any other method based on your requirements.
+    // For simplicity, a basic example is provided here:
+    if (density > 20) {
+      return "#FF0000"; // Red
+    } else if (density > 10) {
+      return "#FFFF00"; // Yellow
+    } else {
+      return "#00FF00"; // Green
+    }
+  }
+
   useEffect(() => {
     if (mapData.showCustomerDensity) {
-      // create new polygons and add it to the mapInstance
-      if (mapInstance && customerDensityData.length > 0) {
-        const newPolygons = customerDensityData.map(({ key, polygon }) => {
-          const newPolygon = new window.google.maps.Polygon({
-            paths: polygon,
-            strokeColor: "#FF0000",
-            strokeOpacity: 0.8,
+      // create new polygons and add them to the mapInstance
+
+      // generate customer density data
+      const densityData = generateCustomerDensityData(20); // fetch customer density data
+
+      if (mapInstance && densityData.length > 0) {
+        const customerDensityPolygons = densityData.map((point) => {
+          const poly = createSquarePolygon(point[0], point[1], 5);
+
+          const fillColor = getColorBasedOnDensity(point[2]);
+
+          const polygon = new google.maps.Polygon({
+            paths: poly,
+            strokeColor: "#26577C",
+            strokeOpacity: 1,
             strokeWeight: 2,
-            fillColor: "#FF0000",
-            fillOpacity: 0.35,
+            fillColor: fillColor,
+            fillOpacity: 0.5,
           });
-          newPolygon.setMap(mapInstance);
-          return newPolygon;
+
+          // Create an InfoWindow for each polygon
+          const infoWindow = new google.maps.InfoWindow({
+            content: `Density: ${point[2]}`,
+          });
+
+          // Add click event listener to show the InfoWindow on polygon click
+          polygon.addListener("mouseover", () => {
+            infoWindow.setPosition({ lat: point[0], lng: point[1] });
+            infoWindow.open(mapInstance, polygon);
+          });
+
+          polygon.addListener("mouseout", () => {
+            infoWindow.close();
+          });
+
+          polygon.setMap(mapInstance);
+          return polygon;
         });
-        polygonsRef.current = newPolygons;
+
+        // Save the array of polygons to the ref
+        customerDensityPolygon.current = customerDensityPolygons;
       }
     } else {
       // remove the existing polygons from the map.
       if (mapInstance) {
-        polygonsRef.current.forEach((polygon) => {
+        customerDensityPolygon.current.forEach((polygon) => {
           polygon.setMap(null);
         });
       }
     }
   }, [mapData.showCustomerDensity]);
 
+  /* 
+  Use Effect to display Recommended Localtion Grids
+
+  1. Fetch the recommended location data for particular city // right now dummy data , {lat , lng}
+  2. Create Polygon for each recommended location data
+  3. Add the polygon to the mapInstance
+  4. Store the polygon in polygonsRef // in this case we are stroing in recommendedLocationPolygonRef
+  5. If the showRecommendedLocation is false then remove all the polygons from the mapInstance
+
+  */
+
+  useEffect(() => {}, [mapData.showRecommendedLocation]);
+
   return (
     <div className="h-full p-2">
       <LoadScript googleMapsApiKey="AIzaSyDi3kInvWusUg4z6_sdFCa5PQBKL7QMEu4">
         <GoogleMap
           mapContainerStyle={{ height: "100%", width: "100%" }}
-          zoom={5}
-          center={{ lat: 20.5937, lng: 78.9629 }}
           onLoad={handleLoadMap}
         ></GoogleMap>
       </LoadScript>
+
+      <p>{mapData.showRecommendedLocation ? "Yes" : "NO"} </p>
     </div>
   );
 }

@@ -29,6 +29,14 @@ export function mapReducer(state, action) {
         ...state,
         showCustomerDensity: action.payload,
       };
+
+      case "SET_SHOW_RECOMMENDED_LOCATION":
+        return {
+          ...state,
+          showRecommendedLocation: action.payload,
+        };
+
+
     default:
       return state;
   }

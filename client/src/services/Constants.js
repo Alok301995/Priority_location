@@ -2574,10 +2574,9 @@ export function generateCustomerDensityData(n) {
 
   const customerDensityData = [];
 
-  // Generate 100 entries
   for (let i = 0; i < n; i++) {
-    const latVariation = (Math.random() - 0.5) * 0.2;
-    const lngVariation = (Math.random() - 0.5) * 0.2;
+    const latVariation = (Math.random() - 0.5) * 0.5;
+    const lngVariation = (Math.random() - 0.5) * 0.5;
 
     // Calculate new coordinates
     const lat = ahmedabadLat + latVariation;
@@ -2585,8 +2584,11 @@ export function generateCustomerDensityData(n) {
 
     const density = Math.floor(Math.random() * (30 - 10 + 1)) + 10;
 
-    customerDensityData.push({ density, lat, lng });
+    customerDensityData.push([ lat, lng, density ]);
   }
 
   return customerDensityData;
 }
+
+
+

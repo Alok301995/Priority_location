@@ -6,10 +6,37 @@ import Dropdown from "./Dropdown";
 import Table from "./Table";
 
 function ServiceLocationsButton() {
+  const [showServiceLocation, setShowServiceLocation] = useState(false);
+  const { mapData, mapDispatch } = useHomeContext();
+
+  useEffect(() => {
+    mapDispatch({
+      type: "SET_SHOW_RECOMMENDED_LOCATION",
+      payload: showServiceLocation,
+    });
+  }, [showServiceLocation]);
+
   return (
-    <div className="group p-2  border-b-[1px] border-b-gray-200 cursor-pointer transition-all ">
-      <div className="bg-slate-200  hover:bg-[#2596be] p-2 rounded-md transition-all">
-        <p className="font-medium text-gray-800 text-center transition-colors duration-300 group-hover:text-white">
+    <div
+      className="group  border-b-gray-200 cursor-pointer transition-all "
+      onClick={(e) => {
+        e.preventDefault();
+        setShowServiceLocation(!showServiceLocation);
+      }}
+    >
+      <div
+        className={`${
+          showServiceLocation
+            ? "bg-[#2596be] "
+            : "hover:bg-[#2596be] bg-slate-200 "
+        } p-2 rounded-md transition-all   `}
+      >
+        <p
+          className={`font-medium text-gray-800 text-center
+        ${showServiceLocation ? "text-white " : "text-black"}
+        
+        transition-colors duration-300 group-hover:text-white`}
+        >
           Recommended Locations
         </p>
       </div>
@@ -51,7 +78,9 @@ function SidePanel() {
       </div>
       <div className="Kpis_panel overflow-auto">
         <OptionPanel />
-        <ServiceLocationsButton />
+        <div className="p-2 border-b-[1px]">
+          <ServiceLocationsButton />
+        </div>
       </div>
       <div className="flex flex-1 justify-center overflow-scroll">
         {/* show all KPIs data in table  */}
