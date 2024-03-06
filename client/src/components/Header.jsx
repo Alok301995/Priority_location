@@ -4,6 +4,7 @@ import Searchbar from "./Searchbar";
 import Dropdown from "./Dropdown";
 import { FiUser } from "react-icons/fi";
 import useHomeContext from "../context/HomeContext";
+import UserProfileDropdown from "./UserProfile";
 
 function Header() {
   return (
@@ -15,12 +16,8 @@ function Header() {
         </p>
       </div>
       <div className="flex flex-1 justify-end items-center ">
-        <div className="mx-1 ">
-          <Searchbar />
-        </div>
         <div className="mx-2 cursor-pointer flex items-center border-[1px] border-gray-300 py-2 px-3 rounded-md ">
-          <FiUser className="text-gray-800 mx-1" />
-          <p className=" text-gray-800 text-sm font-medium mx-1 ">User</p>
+          <UserProfileDropdown />
         </div>
       </div>
     </div>

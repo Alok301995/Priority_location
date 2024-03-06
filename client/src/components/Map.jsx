@@ -1,11 +1,16 @@
-import React, { useState, useEffect, useRef } from "react";
-import { LoadScript, GoogleMap, Polygon } from "@react-google-maps/api";
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import {
+  LoadScript,
+  GoogleMap,
+  Polygon,
+  useJsApiLoader,
+} from "@react-google-maps/api";
 import useHomeContext from "../context/HomeContext";
 import { generateCustomerDensityData, cityData } from "../services/Constants";
 import { createSquarePolygon } from "../services/mapUtilities";
 
 function Map() {
-  const { mapData } = useHomeContext();
+  const { mapData, userData } = useHomeContext();
   const [mapInstance, setMapInstance] = useState(null);
   const polygonsRef = useRef([]);
   const boundaryRef = useRef(null);
@@ -13,9 +18,21 @@ function Map() {
   const customerDensityPolygon = useRef([]);
   const recommendedLocationPolygonRef = useRef([]);
 
-  const handleLoadMap = (map) => {
+  const { isLoaded } = useJsApiLoader({
+    id: "google-map-script",
+    googleMapsApiKey: "AIzaSyDi3kInvWusUg4z6_sdFCa5PQBKL7QMEu4",
+  });
+
+  // const handleLoadMap = (map) => {
+  //   setMapInstance(map);
+  // };
+  const onLoad = React.useCallback(function callback(map) {
     setMapInstance(map);
-  };
+  }, []);
+
+  const onUnmount = React.useCallback(function callback(map) {
+    setMapInstance(null);
+  }, []);
 
   // This useEffect will remove all the polygons from the map using mapInstance.
 
@@ -226,14 +243,13 @@ function Map() {
 
   return (
     <div className="h-full p-2">
-      <LoadScript googleMapsApiKey="AIzaSyDi3kInvWusUg4z6_sdFCa5PQBKL7QMEu4">
+      {isLoaded ? (
         <GoogleMap
           mapContainerStyle={{ height: "100%", width: "100%" }}
-          onLoad={handleLoadMap}
+          onLoad={onLoad}
+          onUnmount={onUnmount}
         ></GoogleMap>
-      </LoadScript>
-
-      <p>{mapData.showRecommendedLocation ? "Yes" : "NO"} </p>
+      ) : null}
     </div>
   );
 }

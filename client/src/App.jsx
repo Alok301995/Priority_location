@@ -6,8 +6,10 @@ import { mapReducer, userReducer } from "./reducers/reducer";
 
 function App() {
   const userState = {
-    userName: "",
     userID: "",
+    isEmpIdValid: false,
+    isOtpValid: false,
+    isUserValid: false,
   };
 
   const mapState = {
@@ -18,6 +20,7 @@ function App() {
   };
 
   const [mapData, mapDispatch] = useReducer(mapReducer, mapState);
+  const [userData, userDispatch] = useReducer(userReducer, userState);
 
   useEffect(() => {}, []);
 
@@ -27,6 +30,8 @@ function App() {
         value={{
           mapData,
           mapDispatch,
+          userData,
+          userDispatch,
         }}
       >
         <Home />
